@@ -1,13 +1,80 @@
 <template>
     <form>
         <label>Email:</label>
-        <input type="email" required />
+        <input type="email" required v-model="email" />
+        <label>Password:</label>
+        <input type="password" required v-model="password" />
+        <label>
+            Role:
+        </label>
+        <select v-model="role">
+            <option value="developer">Web Developer</option>
+            <option value="designer">Web Designer</option>
+        </select>
+
+        <label>Skills:</label>
+        <input type="text" v-model="tempSkill" @keyup.alt="addSkill">
+        <div v-for="skill in skills" :key="skill" class="pill">
+            <span @click="removeSkill(skill)">{{ skill }}</span>
+        </div>
+        <!-- first type of checkbox -->
+        <div class="terms">
+            <input id="checkbox" type="checkbox" v-model="terms" required>
+            <label for="checkbox">Accept Terms and Conditions</label>
+        </div>
+
+        <!-- second type of checkbox -->
+<!--        <div>-->
+<!--            <input type="checkbox" v-model="names" value="shaun" />-->
+<!--            <label>Shaun</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <input type="checkbox" v-model="names" value="yoshi" />-->
+<!--            <label>Yoshi</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <input type="checkbox" v-model="names" value="mario" />-->
+<!--            <label>Mario</label>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <input type="checkbox" v-model="names" value="lugai" />-->
+<!--            <label>Lugai</label>-->
+<!--        </div>-->
     </form>
+    <p>Email: {{ email }}</p>
+    <p>password: {{ password }}</p>
+    <p>role: {{ role }}</p>
+    <p>terms: {{ terms }}</p>
+<!--    <p>names: {{ names }}</p>-->
 </template>
 
 <script>
     export default {
-        name: "SignupForm"
+        name: "SignupForm",
+        data(){
+            return {
+                email: "mario",
+                password: "",
+                role: 'developer',
+                terms: false,
+                // names: []
+                tempSkill: '',
+                skills: []
+            }
+        },
+        methods:{
+            addSkill(e){
+                if(e.key === ',' && this.tempSkill){
+                    if(!this.skills.includes(this.tempSkill)){
+                        this.skills.push(this.tempSkill);
+                    }
+                    this.tempSkill = '';
+                }
+            },
+            removeSkill(skill){
+                this.skills = this.skills.filter(item => { return skill !== item });
+            }
+        }
     }
 </script>
 
@@ -29,7 +96,7 @@
         letter-spacing: 1px;
         font-weight: bold;
     }
-    input {
+    input, select {
         display: block;
         padding: 10px 6px;
         width: 100%;
@@ -37,5 +104,24 @@
         border:none;
         border-bottom: 1px solid #ddd;
         color: #555;
+    }
+    input[type=checkbox]{
+        display: inline-block;
+        width: 16px;
+        margin: 0 10px 0 0;
+        position: relative;
+        top:2px;
+    }
+    .pill {
+        display: inline-block;
+        margin: 20px 10px 0 0;
+        padding: 6px 12px;
+        background: #eee;
+        border-radius: 20px;
+        font-size: 12px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        color: #777;
+        cursor: pointer;
     }
 </style>
